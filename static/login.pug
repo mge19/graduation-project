@@ -1,0 +1,41 @@
+doctype html
+html
+	head
+		link(rel="stylesheet" href="/static/style.css")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		link(href='http://fonts.googleapis.com/css?family=Fraunces' rel='stylesheet' type='text/css')
+		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+		script(src="/static/functions.js")
+		title Login Page
+	body
+		div(class="container text-right")
+			if language=="english"
+				p English | 
+					a(href="/changelanguage") Türkçe
+			else
+				p
+					a(href="/changelanguage") English	
+					| | Türkçe	
+		div(class="text-center")
+			h1 #{text[0][language]}
+			div(class="container")
+				h3 #{text[1][language]}
+				form(method="POST")
+					input(class="col" type="text" value=active_user id="username" name="username" placeholder=text[2][language] required)
+					span(class="fa fa-user userspan")
+					br
+					br
+					input(type="password" class="col" value=active_password id="password" name="password" placeholder=text[3][language] required)
+					span(class="fa fa-key userspan")
+					span(class="fa fa-eye eyespan" onclick="toggle_password()" id="togglePassword")
+					br
+					br
+					button(type="submit" id="submitButton" class="btn btn-primary") #{text[4][language]}
+					br
+					if active_user=="e" && active_password=="f"
+						p #{text[5][language]}
+					else if active_user!="" && active_user!=undefined
+						p #{text[6][language]}

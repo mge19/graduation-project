@@ -1,0 +1,71 @@
+body{
+text-align:center;
+font-family: 'Fraunces', sans-serif !important;
+background-color:#223455 !important;
+}
+h1{
+font-size:35px !important;
+height:auto;
+text-align:center;
+color:#ed62b4;
+}
+h2{
+	text-align:center;
+	color:#e3bdcf;
+}
+h3{
+text-align:center;
+color:#e06733;
+}
+i {
+	cursor:pointer;
+	color:green;
+}
+p{
+	color:#ed0000;
+}
+form{
+background-color:#223455;
+width:45vw;
+display:inline-block;
+}
+h4{
+	color:#18c321;
+}
+a{
+	text-align:right;
+	color:#8502b9;
+}
+.userspan{
+	float: left;
+    margin-left: 3px;
+    margin-top: -23px;
+    position: relative;
+    z-index: 2;
+    color: red;	
+}
+span {
+	float: right;
+    margin-right: 3px;
+    margin-top: -23px;
+    position: relative;
+    z-index: 2;
+    color: red;
+}
+#togglePassword{
+	cursor: pointer;
+}
+table{
+  color:#123abc;
+  width:100%;
+}
+th{
+	text-align:center;
+	vertical-align:center;
+	color:#92e5f8;
+}
+td{
+	text-align:center;
+	vertical-align:center;
+	color:#e3a932 !important;
+}

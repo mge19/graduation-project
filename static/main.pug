@@ -1,0 +1,243 @@
+doctype html
+html
+	head
+		link(rel="stylesheet" href="/static/style.css")
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+		script(src="/static/functions.js")
+		link(href='http://fonts.googleapis.com/css?family=Fraunces' rel='stylesheet' type='text/css')
+		link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+	title Main Menu
+	body
+		div(class="container text-right")
+			if language=="english"
+				p English | 
+					a(href="/changelanguage") Türkçe
+			else
+				p
+					a(href="/changelanguage") English	
+					| | Türkçe		
+			p #{text[7][language]} #{active_user} 
+				a(href="/logout")
+					i(class="fa fa-sign-out-alt" aria-hidden="true")
+		div(class="container text-center")
+			if active_user=="c"
+				header
+					h1 #{text[8][language]}
+					if project==null
+						p #{text[43][language]}
+					else
+						p 
+							strong #{text[9][language]}: #{project.title}
+						p 
+							strong #{text[10][language]}: #{project.advisor}
+			if active_user=="a"
+				header
+					h1 #{text[35][language]}
+					div(class="container")
+						form(method="post")
+							select(id="searchType" class="col-xl-4 col-md")
+								option(value="student") #{text[11][language]}
+								option(value="title") #{text[9][language]}
+								option(value="advisor") #{text[10][language]}
+							input(type="text" id="searchQuery" class="col-xl-5 col-md")
+							button(class="query" class="btn btn-primary col-xl-3 col-md" type="button") #{text[36][language]}
+					div(class="table-responsive results")
+					h3 #{text[37][language]}
+					form(method="post")
+						input(type="text" class="col" id="student" name="student" placeholder=text[11][language] required)
+						br
+						br
+						input(type="text" class="col" id="title" name="title" placeholder=text[9][language] required)
+						br
+						br
+						input(type="text" class="col" id="advisor" name="advisor" placeholder=text[10][language] required)
+						br
+						br
+						if changed==false
+							p #{text[12][language]}
+						button(type="submit" class="btn btn-success") #{text[13][language]}
+
+			header
+				h1(class="text") #{text[14][language]}
+				if result1.length==0
+					p #{text[15][language]}
+				else
+					ul
+						each val in result1
+							li
+								div(class="row")
+									if active_user=="a"
+										h2(class="col-6") #{val.header}
+										i(class="col-2 fa fa-plus" id="show_announcement" onclick="show_hide('show_hide_announcement',this)")
+										i(class="col-2 fa fa-edit" id="update_announcement" onclick="show_hide('update_form_announcement',this)")
+										i(type="submit" class="col-2 fa fa-trash deleteAnnouncement")
+									else
+										h2(class="col-10") #{val.header}
+										i(class="col-2 fa fa-plus" id="show_announcement" onclick="show_hide('show_hide_announcement',this)")
+							li(class="show_hide_announcement" style="display:none")
+								if(val.detail=="")
+									p #{text[16][language]}
+								else	
+									p #{val.detail}
+								if val.files.length>0
+									h4 #{text[17][language]}
+									table
+										each file in val.files
+											tr(class="file_announcements")
+												td
+													a(href="/announcements/"+val._id+"/"+file) #{file}
+													if active_user=="a"
+														td
+															i(type="submit" class="fa fa-trash deleteFileAnnouncements")
+									br
+									if active_user=="a"			
+										button(type="submit" class="btn btn-danger deleteAllFilesAnnouncements") #{text[20][language]}
+							if active_user=="a"
+								li(class="update_form_announcement" style="display:none")
+									form(class="updateAnnouncement" enctype="multipart/form-data" method="post")
+										h3(class="col") #{text[29][language]}
+										input(class="col" type="text" value=val.header class="new_header" name="new_header" placeholder=text[23][language] required)
+										br
+										br
+										textarea(class="col" class="new_details" rows="5" cols="30" name="new_details" placeholder=text[24][language]) #{val.detail}
+										br
+										br
+										p #{text[25][language]}
+										input(type="file" id="updatefiles" class="col updatefiles" multiple)
+										br
+										br
+										button(type="submit" class="btn btn-success") #{text[31][language]}
+					if active_user=="a"
+						button(type="submit" class="btn btn-danger deleteAllAnnouncements") #{text[19][language]}
+			br
+			if active_user=="a"
+				form(enctype="multipart/form-data" method="post")
+					h3(class="col") #{text[27][language]}
+					input(type="text" class="col" id="header" name="header" placeholder=text[21][language] required)
+					br
+					br
+					textarea(id="details" class="col" name="details" rows="5" cols="30" placeholder=text[22][language])
+					br
+					br
+					p #{text[17][language]}
+					input(type="file" class="col" name="filetoupload" id="filetoupload" multiple)
+					br
+					br
+					button(type="submit" class="btn btn-success") #{text[38][language]}			
+			header
+				h1 #{text[39][language]}	
+				if result2.length==0
+					p #{text[40][language]}
+				else
+					ul
+						- var i=0
+						each val in result2
+							li
+								div(class="row")
+									if active_user=="a"
+										h2(class="col-6") #{val.header}
+										i(class="col-2 fa fa-plus" id="show_homework" onclick="show_hide('show_hide_homework',this)")
+										i(class="col-2 fa fa-edit" id="update_homework" onclick="show_hide('update_form_homework',this)")
+										i(type="submit" class="col-2 fa fa-trash deleteHomework")
+									else
+										h2(class="hwheader col-10") #{val.header}
+										i(class="fa fa-plus col-2" id="show_homework" onclick="show_hide('show_hide_homework',this)")
+							li(class="show_hide_homework" style="display:none")
+								if(val.detail=="")
+									p #{text[16][language]}
+								else
+									p #{val.detail}
+								p #{text[33][language]}: #{val.date} #{val.time}
+								if val.files.length>0
+									h4 #{text[18][language]}
+									table
+										each file in val.files
+											tr(class="file_homeworks")
+												td
+													a(href="/homeworks/"+val._id+"/"+file) #{file}
+												if active_user=="a"
+													td
+														i(type="submit" class="fa fa-trash deleteFileHomeworks")
+									br
+									if active_user=="a"
+											button(type="submit" class="btn btn-danger deleteAllFilesHomeworks") #{text[20][language]}
+								if active_user=="c"
+									- var date=new Date(val.date)
+									- var today=new Date()
+									if today<=date
+										form(class="uploadhomework" enctype="multipart/form-data" method="post")
+											input(type="file" id="hwupload" class="col hwupload" multiple required)
+											br
+											br
+											button(type="submit" class="btn btn-success") #{text[41][language]}
+								br
+								if file_found[i]
+									a(href="/download/"+val.header+".zip") #{text[42][language]}									
+							if active_user=="a"		
+								li(class="update_form_homework" style="display:none")
+									form(class="updateHomework" enctype="multipart/form-data" method="post")
+										h3(class="col") #{text[30][language]}
+										input(type="text" class="col" value=val.header id="new_header" name="new_header" placeholder=text[23][language] required)
+										br
+										br
+										textarea(id="new_details" class="col" rows="5" cols="30" name="new_details" placeholder=text[24][language]) #{val.detail}
+										br
+										br
+										p #{text[26][language]}
+										input(type="file" class="col" name="updatefiles" id="updatefiles" multiple)
+										br
+										br
+										p #{text[34][language]}
+										- var today=new Date()
+										- var year=String(today.getFullYear())
+										- var month=String(today.getMonth()+1)
+										if month.length==1
+											- month="0"+month
+										- var day=String(today.getDate())
+										if day.length==1
+											- day="0"+day
+										- date=year+'-'+month+'-'+day
+										input(type="date" name="new_date" min=date value=val.date id="new_date" required) 
+										- var time=val.time
+										if time.length==4
+											time="0"+time
+										input(type="time" name="new_time" id="new_time" value=time required)
+										br
+										br
+										button(type="submit" class="btn btn-success") #{text[31][language]}		
+						-i++
+					if active_user=="a"
+						button(type="submit" class="btn btn-danger deleteAllHomeworks") #{text[19][language]}
+			br
+			if active_user=="a"
+				form(enctype="multipart/form-data" method="post")
+					h3(class="col") #{text[28][language]}
+					input(type="text" class="col" id="header" name="header" placeholder=text[21][language] required)
+					br
+					br
+					textarea(id="details" class="col" name="details" rows="5" cols="30" placeholder=text[22][language])
+					br
+					br
+					p #{text[18][language]}
+					input(type="file" class="col" name="filetoupload" id="filetoupload" multiple)
+					br
+					br
+					p #{text[33][language]}
+					- var today=new Date()
+					- var year=String(today.getFullYear())
+					- var month=String(today.getMonth()+1)
+					if month.length==1
+						- month="0"+month
+					- var day=String(today.getDate())
+					if day.length==1
+						- day="0"+day
+					- date=year+'-'+month+'-'+day
+					input(type="date" name="date" min=date id="date" required)
+					input(type="time" name="time" id="time" required)
+					br
+					br
+					button(type="submit" class="btn btn-success") #{text[38][language]}		
+			br
